@@ -17,6 +17,7 @@ Route::get('/', function () {
   route::post('/canales/registrar','CanalController@store')->name('canales/registrar');
   Route::get('/canales/selectCanales', 'CanalController@selectCanales');
  //Videos
+  Route::post('/uploadFiles','VideoController@uploadFiles')->name('upload-files');
   route::get('/videos','VideoController@index')->name('videos');
   route::get('/videos/listarVideos','VideoController@listarVideo')->name('listarVideos');
   route::post('/videos/registrar','VideoController@store')->name('videos/registrar');

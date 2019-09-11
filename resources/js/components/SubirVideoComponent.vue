@@ -15,11 +15,17 @@
                                             </p>
             
                                             <div class="m-b-30">
-                                                <form action="#" class="dropzone">
-                                                    <div class="fallback">
-                                                        <input name="file" type="file" multiple="multiple">
-                                                    </div>
-                                                </form>
+
+
+
+                                                <vue-dropzone id="drop1" :options="dropOptions" >
+                                                    
+
+                                                </vue-dropzone>
+
+                            
+
+
                                             </div>
             
                                             <div class="text-center m-t-15">
@@ -68,48 +74,46 @@
 
 <script>
  
-import('../../../public/plugins/dropzone/dist/dropzone.js')
-
- Dropzone.options.dropzone =
-     {
+//import('../../../public/plugins/dropzone/dist/dropzone.js')
+//import ('vue2-dropzone/dist/vue2Dropzone.css')
 
 
+import vueDropzone from "vue2-dropzone";
+
+export default {
+
+  data: () => ({
+    dropOptions: {
+        url: "/uploadFiles",
         paramName: 'file',
         chunking: true,
         chunkSize: 1000000, // bytes
         retryChunks: true,
         retryChunksLimit: 3,
         maxFilesize: 100, // megabytes    
-        //forceChunking: true,
-        //url: '/upload',
-    
-     
-        // renameFile: function(file) {
-        //     var dt = new Date();
-        //     var time = dt.getTime();
-        //    return time+file.name;
-        // },
         acceptedFiles: ".mp4",
         addRemoveLinks: true,
         timeout: 5000,
-
-        chunksUploaded: function(file, done) {
-        done();
+        headers: {
+            "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
         }
-
-        // success: function(file, response) 
-        // {
-        //     console.log(response);
-        // },
-        // error: function(file, response)
-        // {
-        //    return false;
+        // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+        // headers: {
+        // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
         // }
+    }
 
-    };
-
+  }),
+  components: {
+    vueDropzone
+  }
+};
 
 
 </script>
+
+
+
+
 
 
