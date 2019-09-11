@@ -70,6 +70,46 @@
  
 import('../../../public/plugins/dropzone/dist/dropzone.js')
 
+ Dropzone.options.dropzone =
+     {
+
+
+        paramName: 'file',
+        chunking: true,
+        chunkSize: 1000000, // bytes
+        retryChunks: true,
+        retryChunksLimit: 3,
+        maxFilesize: 100, // megabytes    
+        //forceChunking: true,
+        //url: '/upload',
+    
+     
+        // renameFile: function(file) {
+        //     var dt = new Date();
+        //     var time = dt.getTime();
+        //    return time+file.name;
+        // },
+        acceptedFiles: ".mp4",
+        addRemoveLinks: true,
+        timeout: 5000,
+
+        chunksUploaded: function(file, done) {
+        done();
+        }
+
+        // success: function(file, response) 
+        // {
+        //     console.log(response);
+        // },
+        // error: function(file, response)
+        // {
+        //    return false;
+        // }
+
+    };
+
+
+
 </script>
 
 

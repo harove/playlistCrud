@@ -144,10 +144,10 @@
               >
                 <tr v-for="(playlist_detalle,index) in itemsWithSubTotal" :key="index">
                   <td scope="row">{{playlist_detalle.item1.id_video}}</td>
-                  <td>{{ playlist_detalle.subinit }} </td>
-                  <td>{{ playlist_detalle.subtotal }}</td>
+                  <td>{{ parseToHour(playlist_detalle.subinit) }} </td>
+                  <td>{{ parseToHour(playlist_detalle.subtotal) }}</td>
                   <td>{{ playlist_detalle.item1.nombre_video }}</td>
-                  <td>{{ playlist_detalle.item1.lenght }}</td>
+                  <td>{{ parseToHour(playlist_detalle.item1.lenght) }}</td>
            
                   
                  

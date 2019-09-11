@@ -16,7 +16,7 @@
                             </li>
 
                             <li>
-                            <router-link to="/playlist/subir" class="waves-effect"><i class="ti-cloud-up "></i><span> Subir Vídeos </span></router-link>
+                            <router-link to="/video/subir" class="waves-effect"><i class="ti-cloud-up "></i><span> Subir Vídeos </span></router-link>
                             </li>
 
                             <li>

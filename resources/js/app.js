@@ -24,9 +24,9 @@ let router = new VueRouter({
             component: require('./components/CrearReproduccionComponent').default
         },
         {
-            path:'/playlist/subir',
+            path:'/video/subir',
             name:'playlist_subir',
-            component: require('./components/SubirReproduccionComponent').default
+            component: require('./components/SubirVideoComponent').default
         },
         {
             path:'/canal/subir',
@@ -63,7 +63,7 @@ Vue.component('dashboard', require('./components/DashboardComponent.vue').defaul
 Vue.component('lista-playlist', require('./components/ListaReproduccionComponent.vue').default);
 Vue.component('editar-playlist', require('./components/EditarReproduccionComponent.vue').default);
 Vue.component('crear-playlist', require('./components/CrearReproduccionComponent.vue').default);
-Vue.component('subir-playlist', require('./components/SubirReproduccionComponent.vue').default);
+Vue.component('subir-video', require('./components/SubirVideoComponent.vue').default);
 Vue.component('crear-canal', require('./components/CrearCanalComponent.vue').default);
 Vue.component('estadistica', require('./components/EstadisticaComponent.vue').default);
 
