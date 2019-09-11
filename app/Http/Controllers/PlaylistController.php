@@ -96,7 +96,9 @@ class PlaylistController extends Controller
         ->join('detalle_playlist', 'detalle_playlist.id_playlist', '=', 'playlist.id')
         ->join('video', 'video.id', '=', 'detalle_playlist.id_video')
         ->select('detalle_playlist.*','video.*')->where('playlist.id',$id)->get();
+        //dd($playlist_detalle);
         return ['playlist_detalle' => $playlist_detalle];
+       
     }
     public function mostrarPlaylist($id){
         $playlist = Playlist::find($id)

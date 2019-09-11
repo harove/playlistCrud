@@ -2057,9 +2057,9 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
     draggable: vuedraggable__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   methods: {
-    listarVideo: function listarVideo(busqueda) {
+    listarVideo: function listarVideo() {
       var esto = this;
-      var url = "/videos/listarVideos" + busqueda;
+      var url = "/videos/listarVideos/";
       axios.get(url).then(function (response) {
         esto.arrayVideo = response.data;
         console.log(response);
@@ -2190,7 +2190,7 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
     }
   },
   mounted: function mounted() {
-    this.listarVideo(this.busqueda);
+    this.listarVideo();
     this.selectUsuarios();
     this.selectCanales();
   }
@@ -2413,6 +2413,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
@@ -2429,6 +2431,7 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
       id_usuario: 0,
       id_canal: 0,
       nombre_video: '',
+      lenght: 0,
       nombre_playlist: '',
       arrayVideos: [],
       arrayPlaylist: [],
@@ -2450,6 +2453,7 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
       var url = "mostrar/detalle_playlist/lista/";
       axios.get(url + this.$route.params.id).then(function (response) {
         var respuesta = response.data;
+        console.log(respuesta);
         _this.arrayPlaylist = respuesta.playlist_detalle;
       })["catch"](function (error) {
         console.log(error.response.data);
@@ -2477,7 +2481,7 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
       var esto = this;
       var url = "/usuarios/selectUsuarios";
       axios.get(url).then(function (response) {
-        console.log(response);
+        //console.log(response);
         var respuesta = response.data;
         esto.arrayUsers = respuesta.usuarios;
       })["catch"](function (error) {
@@ -2488,27 +2492,35 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
       var esto = this;
       var url = "/canales/selectCanales";
       axios.get(url).then(function (response) {
-        console.log(response);
+        //console.log(response);
         var respuesta = response.data;
         esto.arrayCanales = respuesta.canales;
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    agregarDetalleVideo: function agregarDetalleVideo() {
-      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    agregarDetalleVideo: function agregarDetalleVideo(data) {
+      var id = data.id,
+          nombre_video = data.nombre_video,
+          lenght = data.lenght;
+      console.log(id);
+      console.log(nombre_video);
+      console.log(lenght);
       this.arrayPlaylist.push({
         id_video: data["id"],
         nombre_video: data["nombre_video"],
+        lenght: lenght //data["length"], 
         // convierte la hora de video de entrada a segundos
-        testduration: moment(data["lenght"], 'HH:mm:ss: A').diff(moment().startOf('day'), 'seconds')
+        //moment(data["lenght"], 'HH:mm:ss: A').diff(moment().startOf('day'), 'seconds'),
+
       });
+      console.log(this.arrayPlaylist); //debugger;
     },
     listarVideo: function listarVideo() {
       var esto = this;
       var url = "/videos/listarVideos";
       axios.get(url).then(function (response) {
-        console.log(response);
+        //console.log(response);
         var respuesta = response.data;
         esto.arrayVideos = respuesta.videos;
       })["catch"](function (error) {
@@ -2526,7 +2538,7 @@ var message = ["vue.draggable", "draggable", "component", "for", "vue.js 2.0", "
     },
     computeSubTotal: function computeSubTotal(item) {
       //formatPrice is removed here because its not defined in the question
-      this.subTotalAcum = this.subTotalAcum + item.testduration;
+      this.subTotalAcum = this.subTotalAcum + item.lenght;
       return this.subTotalAcum;
     },
     parseToHour: function parseToHour(seconds) {
@@ -7240,7 +7252,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.fade-enter-active, .fade-leave-active {\r\n  transition: opacity .5s;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {\r\n  opacity: 0;\n}\r\n", ""]);
+exports.push([module.i, "\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -63043,7 +63055,7 @@ var render = function() {
             },
             [
               _vm._v(
-                "\r\n                                                                            Guardar Lista\r\n                                                                        "
+                "\n                                                                            Guardar Lista\n                                                                        "
               )
             ]
           ),
@@ -63110,10 +63122,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", [
-                        _vm._v(
-                          _vm._s(_vm.parseToHour(playlist_detalle.subinit)) +
-                            " "
-                        )
+                        _vm._v(_vm._s(playlist_detalle.subinit) + " ")
                       ]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(playlist_detalle.subtotal))]),
@@ -63122,9 +63131,7 @@ var render = function() {
                         _vm._v(_vm._s(playlist_detalle.item1.nombre_video))
                       ]),
                       _vm._v(" "),
-                      _c("td", [
-                        _vm._v(_vm._s(playlist_detalle.item1.testduration))
-                      ]),
+                      _c("td", [_vm._v(_vm._s(playlist_detalle.item1.lenght))]),
                       _vm._v(" "),
                       _c(
                         "td",
@@ -63166,11 +63173,11 @@ var render = function() {
                     _c("td", [
                       _c("i", { staticClass: "ion ion-md-clock" }),
                       _vm._v(
-                        "\r\n                    " +
+                        "\n                    " +
                           _vm._s(
                             (_vm.totalParcial = _vm.parseToHour(_vm.total()))
                           ) +
-                          "\r\n                  "
+                          "\n                  "
                       )
                     ]),
                     _vm._v(" "),
@@ -63258,7 +63265,7 @@ var staticRenderFns = [
           [
             _c("i", { staticClass: "ion ion-md-add-circle" }),
             _vm._v(
-              " Agregar Live\r\n                                                            "
+              " Agregar Live\n                                                            "
             )
           ]
         ),
@@ -63321,7 +63328,7 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "ti-control-play" }),
         _vm._v(
-          " Preview\r\n                                                                            "
+          " Preview\n                                                                            "
         )
       ]
     )
@@ -63338,7 +63345,7 @@ var staticRenderFns = [
       },
       [
         _c("i", { staticClass: "ti-control-play" }),
-        _vm._v(" Preview\r\n          ")
+        _vm._v(" Preview\n          ")
       ]
     )
   },
@@ -82268,13 +82275,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   }, {
     path: '/edit/:id',
     name: 'playlist_editar',
-    component: __webpack_require__(/*! ./components/EditarReproduccionComponent */ "./resources/js/components/EditarReproduccionComponent.vue")["default"] // {
-    //     path:'*',
-    //     name:'dashboard',
-    //     component: require('./components/DashboardComponent').default
-    // },
-
-  }]
+    component: __webpack_require__(/*! ./components/EditarReproduccionComponent */ "./resources/js/components/EditarReproduccionComponent.vue")["default"]
+  } // {
+  //     path:'*',
+  //     name:'dashboard',
+  //     component: require('./components/DashboardComponent').default
+  // },
+  ]
 });
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('master', __webpack_require__(/*! ./components/MasterComponent.vue */ "./resources/js/components/MasterComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('dashboard', __webpack_require__(/*! ./components/DashboardComponent.vue */ "./resources/js/components/DashboardComponent.vue")["default"]);
@@ -82878,8 +82885,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\yoyia\Desktop\vertical\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\yoyia\Desktop\vertical\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/harove/Dropbox/grupoz/playlistCrud/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/harove/Dropbox/grupoz/playlistCrud/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

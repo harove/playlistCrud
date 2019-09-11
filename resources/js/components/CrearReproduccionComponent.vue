@@ -247,9 +247,9 @@ export default {
     draggable
   },
   methods: {
-    listarVideo(busqueda) {
+    listarVideo() {
       let esto = this;
-      var url = "/videos/listarVideos" + busqueda;
+      var url = "/videos/listarVideos/";
       axios
         .get(url)
         .then(function(response) {
@@ -401,7 +401,7 @@ export default {
   },
 
   mounted() {
-    this.listarVideo(this.busqueda);
+    this.listarVideo();
     this.selectUsuarios();
     this.selectCanales();
   }

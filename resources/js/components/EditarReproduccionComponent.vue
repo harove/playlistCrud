@@ -144,10 +144,12 @@
               >
                 <tr v-for="(playlist_detalle,index) in itemsWithSubTotal" :key="index">
                   <td scope="row">{{playlist_detalle.item1.id_video}}</td>
-                  <td>{{ parseToHour(playlist_detalle.subinit) }} </td>
+                  <td>{{ playlist_detalle.subinit }} </td>
                   <td>{{ playlist_detalle.subtotal }}</td>
                   <td>{{ playlist_detalle.item1.nombre_video }}</td>
-                  <td>{{ playlist_detalle.item1.testduration }}</td>
+                  <td>{{ playlist_detalle.item1.lenght }}</td>
+           
+                  
                  
 
                   <td><center>
@@ -225,6 +227,7 @@ export default {
             id_usuario: 0,
             id_canal: 0,
             nombre_video: '',
+            lenght: 0,
             nombre_playlist: '',
             arrayVideos: [],
             arrayPlaylist: [],
@@ -237,7 +240,8 @@ export default {
             testinit: 0,
             totalParcial: 0,
             hora_inicio: 0,
-            fecha_emision: 0
+            fecha_emision: 0,
+       
             
         }
     },
@@ -248,6 +252,7 @@ methods: {
         axios.get(url + this.$route.params.id).then(response =>{
            
           let respuesta = response.data;
+         console.log(respuesta); 
           this.arrayPlaylist = respuesta.playlist_detalle;
 
         }).catch(error =>{
@@ -281,7 +286,7 @@ methods: {
       axios
         .get(url)
         .then(function(response) {
-          console.log(response);
+          //console.log(response);
           let respuesta = response.data;
           esto.arrayUsers = respuesta.usuarios;
         })
@@ -295,28 +300,41 @@ methods: {
       axios
         .get(url)
         .then(function(response) {
-          console.log(response);
+          //console.log(response);
           let respuesta = response.data;
           esto.arrayCanales = respuesta.canales;
         })
         .catch(function(error) {
           console.log(error);
+          
         });
     },
-    agregarDetalleVideo(data = []) {
+    agregarDetalleVideo(data) {
+      const {id, nombre_video, lenght } = data;
+      console.log(id);
+      console.log(nombre_video);
+      console.log(lenght);
+      
+
       this.arrayPlaylist.push({
         id_video: data["id"],
         nombre_video: data["nombre_video"],
+        lenght: lenght, //data["length"], 
     // convierte la hora de video de entrada a segundos
-        testduration: moment(data["lenght"], 'HH:mm:ss: A').diff(moment().startOf('day'), 'seconds'),
+          //moment(data["lenght"], 'HH:mm:ss: A').diff(moment().startOf('day'), 'seconds'),
+       
       });
+      console.log(this.arrayPlaylist);
+      //debugger;
+
+      
     },
     listarVideo() {
       let esto = this;
       var url = "/videos/listarVideos";
       axios.get(url).then(function(response) {
          
-          console.log(response);
+          //console.log(response);
           let respuesta = response.data;
           esto.arrayVideos = respuesta.videos;
         })
@@ -334,7 +352,7 @@ methods: {
 
     computeSubTotal: function(item) {
       //formatPrice is removed here because its not defined in the question
-      this.subTotalAcum = this.subTotalAcum + item.testduration;
+      this.subTotalAcum = this.subTotalAcum + item.lenght;
       return this.subTotalAcum;
     },
     parseToHour(seconds){
