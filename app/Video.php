@@ -19,5 +19,6 @@ class Video extends Model
         'lenght' => 'hh:mm:ss'
     ];
     
+    public $timestamps = false;
     
 }

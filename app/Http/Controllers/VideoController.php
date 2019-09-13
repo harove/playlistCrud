@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Video;
+use Mhor\MediaInfo\MediaInfo;
+use SebastianBergmann\Environment\Console;
 
 class VideoController extends Controller
 {
@@ -40,6 +42,13 @@ class VideoController extends Controller
         }
     }
 
+    // private function f($arg)
+    // {
+    //     var_dump($arg);
+    //     console.log($arg);
+    //     return $arg;
+    // }
+
 
     public function uploadFiles(Request $request){
     
@@ -47,9 +56,12 @@ class VideoController extends Controller
 
         if ($request->input('dzuuid')!=null) {
 
+
+
+
             //$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
             //dump(isset($_REQUEST["dzuuid"]));
-            //dump($_REQUEST);
+            dump($_REQUEST);
             //dump($_FILES["file"]);
             // dump(Input::file('file')->guessClientExtension());
             // dump(Input::file('file')->getClientOriginalName());
@@ -73,6 +85,8 @@ class VideoController extends Controller
             // }    
             $chunk = isset($_REQUEST["dzchunkindex"]) ? intval($_REQUEST["dzchunkindex"]) : 0;
             $chunks = isset($_REQUEST["dztotalchunkcount"]) ? intval($_REQUEST["dztotalchunkcount"]) : 0;
+            $size =  isset($_REQUEST["dztotalfilesize"]) ? intval($_REQUEST["dztotalfilesize"]) : 0;  
+
 
             $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
             $filePath = "uploads/$fileName";
@@ -100,10 +114,56 @@ class VideoController extends Controller
             // Check if file has been uploaded
             if (!$chunks || $chunk == $chunks - 1) {
               // Strip the temp .part suffix off
-              rename("{$filePath}.part", $filePath);
+                rename("{$filePath}.part", $filePath);
+
+                
+
             }
-             
-            die('{"OK": 1, "info": "Upload successful."}');
+
+
+            if ( $chunk == $chunks-1) 
+            {
+
+            exec('mediainfo --Inform="General;%Duration%" ' . $fileName, $output);
+                // type 86 sec = 85962.695312
+            $durationInSec = ceil(ceil($output[0])/1000);
+            //dump(getcwd());
+            dump($durationInSec);
+            die();
+            // $mediaInfo = new MediaInfo();
+            // $mediaInfoContainer = $mediaInfo->getInfo($filePath);
+            // $format = $mediaInfoContainer->get('format');
+
+
+        //    echo 'format = ', f($format)  ;
+            
+
+
+            $video = new Video();
+            $video->nombre_video = $fileName;
+            $video->id_categoria = 1;
+            $video->size = $size;
+            $video->lenght = 10;
+  
+            $video->save();
+
+            }
+
+
+            //return($filePath);
+            //return array($filePath,$fileName);
+            
+
+
+            
+            
+
+
+
+
+            //die('{"OK": 1, "info": "Upload successful."}');
+
+           
 
       //$extension = Input::file('file')->getClientOriginalExtension(); 
                 //$fileName = rand(11111, 99999) . '_' . $dzchunkindex . '.' . $extension; // renameing image
