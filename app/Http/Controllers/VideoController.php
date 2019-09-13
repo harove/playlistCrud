@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Video;
 use Mhor\MediaInfo\MediaInfo;
-use SebastianBergmann\Environment\Console;
+//use SebastianBergmann\Environment\Console;
+//require_once('getid3.php');
+use getID3;
 
 class VideoController extends Controller
 {
@@ -124,12 +126,16 @@ class VideoController extends Controller
             if ( $chunk == $chunks-1) 
             {
 
-            exec('mediainfo --Inform="General;%Duration%" ' . $fileName, $output);
-                // type 86 sec = 85962.695312
-            $durationInSec = ceil(ceil($output[0])/1000);
+            // exec('mediainfo --Inform="General;%Duration%" ' . $filePath, $output);  
+            // $durationInSec = ceil(ceil($output[0])/1000);      
+
+            $getID3 = new getID3;
+            $video_file = $getID3->analyze($filePath);   
+            $duration_seconds = $video_file['playtime_seconds']; 
+
             //dump(getcwd());
-            dump($durationInSec);
-            die();
+            //dump($durationInSec);
+            //die();
             // $mediaInfo = new MediaInfo();
             // $mediaInfoContainer = $mediaInfo->getInfo($filePath);
             // $format = $mediaInfoContainer->get('format');
@@ -143,7 +149,7 @@ class VideoController extends Controller
             $video->nombre_video = $fileName;
             $video->id_categoria = 1;
             $video->size = $size;
-            $video->lenght = 10;
+            $video->lenght = $duration_seconds;
   
             $video->save();
 
