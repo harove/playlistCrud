@@ -90,13 +90,13 @@ class VideoController extends Controller
             $size =  isset($_REQUEST["dztotalfilesize"]) ? intval($_REQUEST["dztotalfilesize"]) : 0;  
 
 
-            $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
+            $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file2"]["name"];
             $filePath = "uploads/$fileName";
 
             $out = @fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
             if ($out) {
               // Read binary input stream and append it to temp file
-              $in = @fopen($_FILES['file']['tmp_name'], "rb");
+              $in = @fopen($_FILES['file2']['tmp_name'], "rb");
              
               if ($in) {
                 while ($buff = fread($in, 512))
@@ -117,9 +117,6 @@ class VideoController extends Controller
             if (!$chunks || $chunk == $chunks - 1) {
               // Strip the temp .part suffix off
                 rename("{$filePath}.part", $filePath);
-
-                
-
             }
 
 
