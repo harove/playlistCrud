@@ -79,13 +79,15 @@
 
 
 import vueDropzone from "vue2-dropzone";
+import SparkMD5 from 'spark-md5';
 
 export default {
 
   data: () => ({
     dropOptions: {
         url: "/uploadFiles",
-        paramName: 'file',
+        paramName: 'file2',
+        
         chunking: true,
         chunkSize: 1000000, // bytes
         retryChunks: true,
@@ -96,7 +98,36 @@ export default {
         timeout: 5000,
         headers: {
             "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
+        },
+
+        accept: function(file, done) {
+        if (file.name == "HTML_1_2M.mp4") {
+
+        var spark = new SparkMD5();
+        spark.append('Hi');
+        console.log(spark);
+        spark.append('there que mas tarco');
+        console.log(spark);
+        var hexHash1 = spark.end();
+        console.log(hexHash1);
+
+        var spark2 = new SparkMD5();
+        spark2.append('Hithere');
+        var hexHash2 = spark2.end();
+        console.log(hexHash2);
+        
+        
+
+
+
+
+        done();
         }
+        else { done(); }
+  }
+
+
+
         // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
         // headers: {
         // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
