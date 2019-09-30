@@ -81,9 +81,11 @@
 import vueDropzone from "vue2-dropzone";
 import SparkMD5 from 'spark-md5';
 
+
 export default {
 
   data: () => ({
+
     dropOptions: {
         url: "/uploadFiles",
         paramName: 'file2',
@@ -103,29 +105,40 @@ export default {
 
 
 
-        accept: function(file, done) {
-            
-var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
-        file = this.files[0],
-        //chunkSize = 2097152,          
-        chunkSize = 1000000,
-        chunks = Math.ceil(file.size / chunkSize),
-        currentChunk = 0,
-        spark = new SparkMD5.ArrayBuffer(),
-        fileReader = new FileReader();
+      accept: function(file, done) {
 
-    fileReader.onload = function (e) {
-        console.log('read chunk nr', currentChunk + 1, 'of', chunks);
-        spark.append(e.target.result);                   // Append array buffer
-        currentChunk++;
+            var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
+            file = this.files[0],
+            //chunkSize = 2097152,          
+            chunkSize = 1000000,
+            chunks = Math.ceil(file.size / chunkSize),
+            currentChunk = 0,
+            spark = new SparkMD5.ArrayBuffer(),
+            fileReader = new FileReader();
+            var finalHash = ""
+       
 
-        if (currentChunk < chunks) {
-            loadNext();
-        } else {
-            console.log('finished loading');
-            console.info('computed hash', spark.end());  // Compute hash
-        }
-    };
+        fileReader.onload = function (e) {
+            console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+            spark.append(e.target.result);                   // Append array buffer
+            currentChunk++;
+
+            if (currentChunk < chunks) {
+                loadNext();
+            } else {
+                console.log('finished loading');
+                finalHash = spark.end()
+                console.info('computed hash', finalHash);  // Compute hash
+
+            }
+        };
+
+
+     this.on("sending", function(file, xhr, formData) {
+                formData.append("hash", finalHash);
+                console.log(formData)
+                });
+
 
     fileReader.onerror = function () {
         console.warn('oops, something went wrong.');
@@ -140,7 +153,7 @@ var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototyp
 
     loadNext();
 
-
+    done();
 
 
 
@@ -158,7 +171,7 @@ var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototyp
             else { 
                 done();
             }
-        }
+        }   //accept function
 
 
 
@@ -167,6 +180,9 @@ var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototyp
         // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
         // }
     }
+
+
+
   }),
   components: {
     vueDropzone

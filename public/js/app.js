@@ -2720,6 +2720,7 @@ __webpack_require__.r(__webpack_exports__);
               currentChunk = 0,
               spark = new spark_md5__WEBPACK_IMPORTED_MODULE_1___default.a.ArrayBuffer(),
               fileReader = new FileReader();
+          var finalHash = "";
 
           fileReader.onload = function (e) {
             console.log('read chunk nr', currentChunk + 1, 'of', chunks);
@@ -2731,9 +2732,15 @@ __webpack_require__.r(__webpack_exports__);
               loadNext();
             } else {
               console.log('finished loading');
-              console.info('computed hash', spark.end()); // Compute hash
+              finalHash = spark.end();
+              console.info('computed hash', finalHash); // Compute hash
             }
           };
+
+          this.on("sending", function (file, xhr, formData) {
+            formData.append("hash", finalHash);
+            console.log(formData);
+          });
 
           fileReader.onerror = function () {
             console.warn('oops, something went wrong.');
@@ -2746,6 +2753,7 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           loadNext();
+          done();
 
           if (file.name == "HTML_1_2M.mp4") {// var spark = new SparkMD5();
             // spark.append('Hi');
@@ -2756,7 +2764,8 @@ __webpack_require__.r(__webpack_exports__);
           } else {
             done();
           }
-        } // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
+        } //accept function
+        // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
         // headers: {
         // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
         // }
