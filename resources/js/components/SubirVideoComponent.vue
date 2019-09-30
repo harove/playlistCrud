@@ -100,19 +100,68 @@ export default {
             "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
         },
 
+
+
+
         accept: function(file, done) {
+            
+var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
+        file = this.files[0],
+        //chunkSize = 2097152,          
+        chunkSize = 1000000,
+        chunks = Math.ceil(file.size / chunkSize),
+        currentChunk = 0,
+        spark = new SparkMD5.ArrayBuffer(),
+        fileReader = new FileReader();
+
+    fileReader.onload = function (e) {
+        console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+        spark.append(e.target.result);                   // Append array buffer
+        currentChunk++;
+
+        if (currentChunk < chunks) {
+            loadNext();
+        } else {
+            console.log('finished loading');
+            console.info('computed hash', spark.end());  // Compute hash
+        }
+    };
+
+    fileReader.onerror = function () {
+        console.warn('oops, something went wrong.');
+    };
+
+    function loadNext() {
+        var start = currentChunk * chunkSize,
+            end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+        fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+    }
+
+    loadNext();
+
+
+
+
+
             if (file.name == "HTML_1_2M.mp4") {
-                var spark = new SparkMD5();
-                spark.append('Hi');
-                spark.append('there');
-                var Hash = spark.end();
-                console.log(Hash);
-                done();
+                // var spark = new SparkMD5();
+                // spark.append('Hi');
+                // spark.append('there');
+                // var Hash = spark.end();
+                // console.log(Hash);
+                // done();
+
+
+
             }
             else { 
                 done();
             }
         }
+
+
+
         // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
         // headers: {
         // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
