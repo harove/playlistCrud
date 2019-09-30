@@ -7,7 +7,11 @@
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
-                                <tr>
+                                <tr>  
+
+
+
+                                    
                                     <th>ID</th>
                                     <th>Nombre Lista</th>
                                     <th>Tiempo Total</th>
