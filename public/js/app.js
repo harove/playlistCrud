@@ -2715,15 +2715,9 @@ __webpack_require__.r(__webpack_exports__);
           if (file.name == "HTML_1_2M.mp4") {
             var spark = new spark_md5__WEBPACK_IMPORTED_MODULE_1___default.a();
             spark.append('Hi');
-            console.log(spark);
-            spark.append('there que mas tarco');
-            console.log(spark);
-            var hexHash1 = spark.end();
-            console.log(hexHash1);
-            var spark2 = new spark_md5__WEBPACK_IMPORTED_MODULE_1___default.a();
-            spark2.append('Hithere');
-            var hexHash2 = spark2.end();
-            console.log(hexHash2);
+            spark.append('there');
+            var Hash = spark.end();
+            console.log(Hash);
             done();
           } else {
             done();

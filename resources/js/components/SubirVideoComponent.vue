@@ -101,46 +101,28 @@ export default {
         },
 
         accept: function(file, done) {
-        if (file.name == "HTML_1_2M.mp4") {
-
-        var spark = new SparkMD5();
-        spark.append('Hi');
-        console.log(spark);
-        spark.append('there que mas tarco');
-        console.log(spark);
-        var hexHash1 = spark.end();
-        console.log(hexHash1);
-
-        var spark2 = new SparkMD5();
-        spark2.append('Hithere');
-        var hexHash2 = spark2.end();
-        console.log(hexHash2);
-        
-        
-
-
-
-
-        done();
+            if (file.name == "HTML_1_2M.mp4") {
+                var spark = new SparkMD5();
+                spark.append('Hi');
+                spark.append('there');
+                var Hash = spark.end();
+                console.log(Hash);
+                done();
+            }
+            else { 
+                done();
+            }
         }
-        else { done(); }
-  }
-
-
-
         // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
         // headers: {
         // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
         // }
     }
-
   }),
   components: {
     vueDropzone
   }
 };
-
-
 </script>
 
 
