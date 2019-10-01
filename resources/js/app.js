@@ -34,6 +34,11 @@ let router = new VueRouter({
             component: require('./components/CrearCanalComponent').default
         },
         {
+            path:'/canales',
+            name:'canales',
+            component: require('./components/listarCanalesComponent').default
+        },
+        {
             path:'/dashboard',
             name:'dashboard',
             component: require('./components/DashboardComponent').default
@@ -66,6 +71,8 @@ Vue.component('crear-playlist', require('./components/CrearReproduccionComponent
 Vue.component('subir-video', require('./components/SubirVideoComponent.vue').default);
 Vue.component('crear-canal', require('./components/CrearCanalComponent.vue').default);
 Vue.component('estadistica', require('./components/EstadisticaComponent.vue').default);
+Vue.component('canales', require('./components/listarCanalesComponent.vue').default);
+
 
 
 

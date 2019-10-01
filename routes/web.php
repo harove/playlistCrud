@@ -13,7 +13,7 @@ Route::get('/', function () {
 //Users
   Route::get('/usuarios/selectUsuarios', 'UsuarioController@selectUsuarios');
  //Canales
-  route::get('/canales','CanalController@index')->name('canales');
+  Route::get('/canales_ok','CanalController@index')->name('canales');
   route::post('/canales/registrar','CanalController@store')->name('canales/registrar');
   Route::get('/canales/selectCanales', 'CanalController@selectCanales');
  //Videos

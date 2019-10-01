@@ -15,6 +15,7 @@ class VideoController extends Controller
         
         $videos = Video::all();
         return ['videos' => $videos];
+        
     }
 
     public function listarVideo( Request $request){
@@ -57,9 +58,6 @@ class VideoController extends Controller
         //return 'uploadFiles';
 
         if ($request->input('dzuuid')!=null) {
-
-
-
 
             //$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
             //dump(isset($_REQUEST["dzuuid"]));
@@ -137,11 +135,8 @@ class VideoController extends Controller
             // $mediaInfoContainer = $mediaInfo->getInfo($filePath);
             // $format = $mediaInfoContainer->get('format');
 
-
         //    echo 'format = ', f($format)  ;
             
-
-
             $video = new Video();
             $video->nombre_video = $fileName;
             $video->id_categoria = 1;
@@ -155,18 +150,9 @@ class VideoController extends Controller
 
             //return($filePath);
             //return array($filePath,$fileName);
-            
-
-
-            
-            
-
-
-
+          
 
             //die('{"OK": 1, "info": "Upload successful."}');
-
-           
 
       //$extension = Input::file('file')->getClientOriginalExtension(); 
                 //$fileName = rand(11111, 99999) . '_' . $dzchunkindex . '.' . $extension; // renameing image

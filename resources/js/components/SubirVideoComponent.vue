@@ -1,5 +1,4 @@
 
- 
 <style src="../../../public/plugins/dropzone/dist/dropzone.css"></style>
 
 
@@ -74,120 +73,87 @@
 
 <script>
  
-//import('../../../public/plugins/dropzone/dist/dropzone.js')
-//import ('vue2-dropzone/dist/vue2Dropzone.css')
+    import vueDropzone from "vue2-dropzone";
+    import SparkMD5 from 'spark-md5';
 
 
-import vueDropzone from "vue2-dropzone";
-import SparkMD5 from 'spark-md5';
+    export default {
+
+        data: () => ({
+            dropOptions: {
+                url: "/uploadFiles",
+                paramName: 'file2',
+                
+                chunking: true,
+                chunkSize: 1000000, // bytes
+                retryChunks: true,
+                retryChunksLimit: 3,
+                maxFilesize: 100, // megabytes    
+                acceptedFiles: ".mp4",
+                addRemoveLinks: true,
+                timeout: 5000,
+                headers: {
+                    "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
+                },
+
+                accept: function(file, done) {
+                    var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
+                    file = this.files[0],
+                    //chunkSize = 2097152,          
+                    chunkSize = 1000000,
+                    chunks = Math.ceil(file.size / chunkSize),
+                    currentChunk = 0,
+                    spark = new SparkMD5.ArrayBuffer(),
+                    fileReader = new FileReader();
+                    var finalHash = ""
+            
+                    fileReader.onload = function (e) {
+                        console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+                        spark.append(e.target.result);                   // Append array buffer
+                        currentChunk++;
+
+                        if (currentChunk < chunks) {
+                            loadNext();
+                        } else {
+                            console.log('finished loading');
+                            finalHash = spark.end()
+                            console.info('computed hash', finalHash);  // Compute hash
+
+                        }
+                    };
+
+                    this.on("sending", function(file, xhr, formData) {
+                                formData.append("hash", finalHash);
+                                console.log(formData)
+                    });
 
 
-export default {
+                    fileReader.onerror = function () {
+                        console.warn('oops, something went wrong.');
+                    };
 
-  data: () => ({
+                    function loadNext() {
+                        var start = currentChunk * chunkSize,
+                            end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
 
-    dropOptions: {
-        url: "/uploadFiles",
-        paramName: 'file2',
-        
-        chunking: true,
-        chunkSize: 1000000, // bytes
-        retryChunks: true,
-        retryChunksLimit: 3,
-        maxFilesize: 100, // megabytes    
-        acceptedFiles: ".mp4",
-        addRemoveLinks: true,
-        timeout: 5000,
-        headers: {
-            "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
-        },
+                        fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+                    }
+                    loadNext();
+                    done();
+                }   //accept function
+
+            }  //drop options
+
+        }),    //data
 
 
+        components: {
+            vueDropzone
+        }
 
 
-      accept: function(file, done) {
 
-            var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
-            file = this.files[0],
-            //chunkSize = 2097152,          
-            chunkSize = 1000000,
-            chunks = Math.ceil(file.size / chunkSize),
-            currentChunk = 0,
-            spark = new SparkMD5.ArrayBuffer(),
-            fileReader = new FileReader();
-            var finalHash = ""
-       
-
-        fileReader.onload = function (e) {
-            console.log('read chunk nr', currentChunk + 1, 'of', chunks);
-            spark.append(e.target.result);                   // Append array buffer
-            currentChunk++;
-
-            if (currentChunk < chunks) {
-                loadNext();
-            } else {
-                console.log('finished loading');
-                finalHash = spark.end()
-                console.info('computed hash', finalHash);  // Compute hash
-
-            }
-        };
-
-
-     this.on("sending", function(file, xhr, formData) {
-                formData.append("hash", finalHash);
-                console.log(formData)
-                });
-
-
-    fileReader.onerror = function () {
-        console.warn('oops, something went wrong.');
     };
-
-    function loadNext() {
-        var start = currentChunk * chunkSize,
-            end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
-
-        fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
-    }
-
-    loadNext();
-
-    done();
-
-
-
-            if (file.name == "HTML_1_2M.mp4") {
-                // var spark = new SparkMD5();
-                // spark.append('Hi');
-                // spark.append('there');
-                // var Hash = spark.end();
-                // console.log(Hash);
-                // done();
-
-
-
-            }
-            else { 
-                done();
-            }
-        }   //accept function
-
-
-
-        // headers: {'X-CSRF-TOKEN': Laravel.csrfToken},
-        // headers: {
-        // 'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
-        // }
-    }
-
-
-
-  }),
-  components: {
-    vueDropzone
-  }
-};
 </script>
 
 
