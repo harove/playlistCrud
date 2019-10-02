@@ -2898,6 +2898,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-sweetalert2 */ "./node_modules/vue-sweetalert2/dist/index.js");
 //
 //
 //
@@ -2938,6 +2939,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+Vue.use(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_0__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2946,9 +2949,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     listarCanal: function listarCanal() {
+      var _this = this;
+
       axios.get("/canales_ok").then(function (response) {
-        this.arrayCanales = response.data;
         console.log(response);
+        _this.arrayCanales = response.data.canales;
+        debugger;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -60923,7 +60929,7 @@ module.exports = function (css) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v8.17.6
+* sweetalert2 v8.18.0
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -63822,7 +63828,7 @@ Object.keys(instanceMethods).forEach(function (key) {
   };
 });
 SweetAlert.DismissReason = DismissReason;
-SweetAlert.version = '8.17.6';
+SweetAlert.version = '8.18.0';
 
 var Swal = SweetAlert;
 Swal["default"] = Swal;
@@ -66070,50 +66076,7 @@ var render = function() {
                       domProps: { textContent: _vm._s(canal.nombre_canal) }
                     }),
                     _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "center",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass:
-                                  "btn btn-success waves-effect waves-light mx-auto",
-                                attrs: {
-                                  to: {
-                                    name: "playlist_editar",
-                                    params: { id: _vm.playlist.id }
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "ti-pencil" })]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-danger waves-effect waves-light mx-auto",
-                                attrs: { type: "submit" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.borrarRegistro(
-                                      _vm.playlist,
-                                      index
-                                    )
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "ti-trash" })]
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
+                    _c("td", [_c("center")], 1)
                   ])
                 }),
                 0
@@ -84547,8 +84510,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     name: 'playlist_subir',
     component: __webpack_require__(/*! ./components/SubirVideoComponent */ "./resources/js/components/SubirVideoComponent.vue")["default"]
   }, {
-    path: '/canal/subir',
-    name: 'canal_subir',
+    path: '/canal/crear',
+    name: 'canal_crear',
     component: __webpack_require__(/*! ./components/CrearCanalComponent */ "./resources/js/components/CrearCanalComponent.vue")["default"]
   }, {
     path: '/canales',

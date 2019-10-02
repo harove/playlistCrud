@@ -20,8 +20,8 @@
                                     <td>  
                                         <center>
                                         <!-- <a class="btn btn-success waves-effect waves-light mx-auto" ><i class="ti-pencil"></i></a> -->
-                                        <router-link :to="{name: 'playlist_editar', params: {id: playlist.id}}" class="btn btn-success waves-effect waves-light mx-auto"><i class="ti-pencil"></i></router-link>
-                                        <button type="submit" class="btn btn-danger waves-effect waves-light mx-auto" @click='borrarRegistro(playlist,index)'><i class="ti-trash"></i></button>
+                                        <!-- <router-link :to="{name: 'playlist_editar', params: {id: playlist.id}}" class="btn btn-success waves-effect waves-light mx-auto"><i class="ti-pencil"></i></router-link>
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light mx-auto" @click='borrarRegistro(playlist,index)'><i class="ti-trash"></i></button> -->
                                         </center>                                            
                                     </td> 
                                 </tr>                                
@@ -40,6 +40,10 @@
 
 <script>
 
+import VueSweetalert2 from 'vue-sweetalert2'; 
+Vue.use(VueSweetalert2);
+
+
 export default {
     data() {
         return {
@@ -52,15 +56,15 @@ export default {
         listarCanal() {
             axios
                 .get("/canales_ok")
-                .then(function(response) {
-                    this.arrayCanales = response.data;
+                .then( (response) => {
                     console.log(response);
+                    this.arrayCanales = response.data.canales;
+                    debugger
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
         }
-
     },
 
     mounted() {

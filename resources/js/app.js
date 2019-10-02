@@ -29,8 +29,8 @@ let router = new VueRouter({
             component: require('./components/SubirVideoComponent').default
         },
         {
-            path:'/canal/subir',
-            name:'canal_subir',
+            path:'/canal/crear',
+            name:'canal_crear',
             component: require('./components/CrearCanalComponent').default
         },
         {

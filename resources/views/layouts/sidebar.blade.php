@@ -16,6 +16,11 @@
                             </li>
 
                             <li>
+                                <router-link to="/canal/crear" class="waves-effect"><i class="ti-desktop"></i><span> Canal Crear </span></router-link>
+                            </li>
+
+
+                            <li>
                             <router-link to="/video/subir" class="waves-effect"><i class="ti-cloud-up "></i><span> Subir Vídeos </span></router-link>
                             </li>
 

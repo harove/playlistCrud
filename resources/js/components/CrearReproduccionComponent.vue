@@ -197,6 +197,8 @@ var moment = require('moment');
 import VueSweetalert2 from 'vue-sweetalert2';
 Vue.use(VueSweetalert2);
 
+
+
 const message = [
   "vue.draggable",
   "draggable",
