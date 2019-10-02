@@ -12,7 +12,7 @@
                             </li>
 
                             <li>
-                            <router-link to="/canal/subir" class="waves-effect"><i class="ti-desktop"></i><span> Canales </span></router-link>
+                            <router-link to="/canales" class="waves-effect"><i class="ti-desktop"></i><span> Canales </span></router-link>
                             </li>
 
                             <li>
